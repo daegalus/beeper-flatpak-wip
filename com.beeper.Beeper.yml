@@ -1,0 +1,65 @@
+app-id: com.beeper.Beeper
+runtime: org.freedesktop.Platform
+runtime-version: '22.08'
+sdk: org.freedesktop.Sdk
+base: org.electronjs.Electron2.BaseApp
+base-version: '22.08'
+command: beeper
+rename-icon: beeper
+finish-args:
+  - --device=dri
+  - --share=ipc
+  - --share=network
+  - --socket=fallback-x11
+  - --socket=wayland
+  - --socket=pulseaudio
+  - --socket=system-bus
+  - --talk-name=org.freedesktop.Notifications
+  - --env=BEEPER_USE_WAYLAND=0
+modules:
+  - shared-modules/libsecret/libsecret.json
+
+  - name: beeper
+    buildsystem: simple
+    build-commands:
+      - chmod +x Beeper.AppImage
+      - ./Beeper.AppImage --appimage-extract
+      - rm Beeper.AppImage
+
+      - desktop-file-edit --set-icon ${FLATPAK_ID} --set-key Exec --set-value 'beeper
+        %u' squashfs-root/beeper.desktop
+      - install -Dm644 squashfs-root/beeper.desktop ${FLATPAK_DEST}/share/applications/${FLATPAK_ID}.desktop
+
+      - install -Dm755 beeper.sh ${FLATPAK_DEST}/bin/beeper
+      - install -Dm644 com.beeper.Beeper.metainfo.xml ${FLATPAK_DEST}/share/metainfo/${FLATPAK_ID}.metainfo.xml
+
+      - mkdir -p ${FLATPAK_DEST}/share/icons/hicolor
+      - cp -r squashfs-root/usr/share/icons/hicolor/* ${FLATPAK_DEST}/share/icons/hicolor
+      # flatpak doesn't support icons larger than 512x512
+      - rm -rf ${FLATPAK_DEST}/share/icons/hicolor/1024x1024
+
+      - rm -rf squashfs-root/resources/icons/win
+
+      - mv squashfs-root ${FLATPAK_DEST}/beeper
+
+      # To allow separate locales
+      # https://searchfox.org/mozilla-central/rev/8a4f55bc09ffc5c25dcb4586c51ae4a9fee77b4c/taskcluster/docker/firefox-flatpak/runme.sh#131-133
+      - |
+        for lang in ${FLATPAK_DEST}/beeper/locales/*.pak
+        do
+          locale="$(basename -s .pak $lang)"
+          install -Dm644 -t "${FLATPAK_DEST}/share/runtime/locale/${locale%%-*}/" "$lang"
+          ln -sf "${FLATPAK_DEST}/share/runtime/locale/${locale%%-*}/$(basename $lang)" "${FLATPAK_DEST}/beeper/locales/$(basename $lang)"
+        done
+    sources:
+      - type: file
+        only-arches: [x86_64]
+        url: https://download.beeper.com/linux/appImage/x64
+        sha512: d4082a0f9af3f55c744bbbdb7846744c486a075ab89e8a35f628e28b961853fdaa66c8de12112a7dbacb5c9c812c01b149f4c31e8cb4efe35cf940d84c3b7441
+        dest_filename: Beeper.AppImage
+        
+      - type: file
+        path: beeper.sh
+
+      - type: file
+        path: com.beeper.Beeper.metainfo.xml
