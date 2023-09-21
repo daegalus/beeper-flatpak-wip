@@ -1,6 +1,6 @@
 # Beeper
 
-**DISCLAIMER: This is a Work In Progress repo for what will eventually be submitted to Flathub. **
+**DISCLAIMER: This is a Work In Progress repo for what will eventually be submitted to Flathub.**
 
 Things that need to be done first:
 
