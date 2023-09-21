@@ -87,3 +87,31 @@ But reading the documentation above, we can format it as `https://download.beepe
 we also know there are deb and rpm files. so you can do `https://download.beeper.com/versions/3.77.21/linux/rpm` and get the latest RPM file.
 
 This should be enough information for anyone to create automated download/packaging for Flatpak, Nix, or anything for Beeper. Along with how to maintain the version updates.
+
+### Converting the SHA512 hashes
+
+So another little quibble is the sha512 hashes are incoded in Base64, instead of the standard hex that most places uses. Not a big deal, but they do need to be converted, at leasst for Flatpaks.
+
+I will show the way to do it on the command-line on Linux. You can use any other language or tools if you can get the same result as running `sha512sum` on the AppImage or other files.
+
+```sh
+echo -n "<hash in base64>" | base64 -d | hexdump -v -e '/1 "%02x"'
+```
+
+Using the above on the hash for the 3.77.21 AppImage in the above example
+
+```sh
+echo -n "zQcKZWFxTbXBKhMGoeIix+IVqq3H+/QAUP3Htxv1MToetwTwuw7+zZIA/sHCyW4BClUD+KcdVOuQs5OF/8BhfQ==" | base64 -d | hexdump -v -e '/1 "%02x"'
+```
+
+Results in the following hash (note, there is no newline at the end, so you might see a `%` that you shouldn't copy):
+
+```sh
+cd070a6561714db5c12a1306a1e222c7e215aaadc7fbf40050fdc7b71bf5313a1eb704f0bb0efecd9200fec1c2c96e010a5503f8a71d54eb90b39385ffc0617d
+```
+
+This is the same as the result of `sha512sum ~/Downloads/beeper-3.77.21.AppImage` as shown below
+
+```sh
+cd070a6561714db5c12a1306a1e222c7e215aaadc7fbf40050fdc7b71bf5313a1eb704f0bb0efecd9200fec1c2c96e010a5503f8a71d54eb90b39385ffc0617d  /home/yulian/Downloads/beeper-3.77.21.AppImage
+```
