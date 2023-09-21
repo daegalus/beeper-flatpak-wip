@@ -31,16 +31,12 @@
   <url type="bugtracker">https://github.com/flathub/com.beeper.Beeper/issues</url>
 
   <launchable type="desktop-id">com.beeper.Beeper.desktop</launchable>
-  <!-- <screenshots>
+  <screenshots>
     <screenshot type="default">
         <image>
-            ???</image>
+          https://raw.githubusercontent.com/daegalus/beeper-flatpak-wip/main/screenshot.png</image>
     </screenshot>
-    <screenshot>
-        <image>
-            ????</image>
-    </screenshot>
-</screenshots> -->
+</screenshots>
 
   <content_rating type="oars-1.1" />
 
