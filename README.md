@@ -1,5 +1,17 @@
 # Beeper
 
+**DISCLAIMER: This is a Work In Progress repo for what will eventually be submitted to Flathub. **
+
+Things that need to be done first:
+
+- Ideally permission from Beeper folks to do this, not required but always a good idea
+- A way to know what the current version of beeper is (programmatically, be it scraping a page, or an API, or something).
+- A hash of the AppImage provided with the download, so we can verify the image.
+- Be able to pull a specific version of the AppImage, not just `latest` (can be worked around, but not ideal)
+- Generic screenshots for Flathub
+
+---
+
 Flatpak wrapper around the official Beeper desktop application - https://beeper.com/download
 
 ## Wayland support
