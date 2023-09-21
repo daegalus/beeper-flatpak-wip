@@ -54,8 +54,8 @@ modules:
     sources:
       - type: file
         only-arches: [x86_64]
-        url: https://download.beeper.com/linux/appImage/x64
-        sha512: d4082a0f9af3f55c744bbbdb7846744c486a075ab89e8a35f628e28b961853fdaa66c8de12112a7dbacb5c9c812c01b149f4c31e8cb4efe35cf940d84c3b7441
+        url: https://download.beeper.com/versions/3.77.21/linux/appImage/x64
+        sha512: cd070a6561714db5c12a1306a1e222c7e215aaadc7fbf40050fdc7b71bf5313a1eb704f0bb0efecd9200fec1c2c96e010a5503f8a71d54eb90b39385ffc0617d
         dest_filename: Beeper.AppImage
         
       - type: file
